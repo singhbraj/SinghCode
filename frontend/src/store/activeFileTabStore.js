@@ -1,9 +1,9 @@
 import { create } from 'zustand'
 
 
-export const useActiveFileTab = create((set) => ({
+ const useActiveFileTabStore = create((set) => ({
     activeFileTab: null,
-    setActiveFileTab: (path,value,extension)=>{
+    setActiveFile: (path,value,extension)=>{
         set({
             activeFileTab: {
                 path:path,
@@ -13,3 +13,5 @@ export const useActiveFileTab = create((set) => ({
         })
     }
 }))
+
+export default useActiveFileTabStore;

@@ -7,6 +7,7 @@ import { createServer } from 'node:http';
 import chokidar from 'chokidar';
 import path from 'path';
 import { handlerEditorSocketEvents } from './socketHandlers/editorHandler.js';
+import queryString from 'querystring';
 
 const app = express();
 const server = createServer(app);
@@ -36,7 +37,8 @@ editorNamespace.on('connection', (socket) => {
 
     // somehow we will get the projectId from the frontend 
 
-    let projectId ="123";
+    let projectId = socket.handshake.query['projectId'] || null;
+    console.log("Project id received after connetction",projectId);
 
     if(projectId){
 
@@ -50,7 +52,7 @@ editorNamespace.on('connection', (socket) => {
             ignoreInitial:true, /** ignores the initial file change event **/
         })
 
-        warcher.on("all", (event, path) => {
+        watcher.on("all", (event, path) => {
             console.log(`File ${path} has been ${event}`);
             socket.emit('file-changed', {path}) 
         });
@@ -60,7 +62,9 @@ editorNamespace.on('connection', (socket) => {
 
     handlerEditorSocketEvents(socket);
     socket.on('disconnect', () => {
-        await watcher.close();
+        if (watcher) {
+            watcher.close();
+        }
         console.log('a user disconnected from editor namespace');
     });
 });

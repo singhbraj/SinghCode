@@ -2,7 +2,7 @@ import fs from "fs/promises";
 
 export const handlerEditorSocketEvents = (socket) =>{
  
-     socket.on("writeFile", ({data, pathToFileOrFOlder})=>{
+     socket.on("writeFile", async({data, pathToFileOrFOlder})=>{
         try{
             await fs.writeFile(pathToFileOrFOlder, data);
             socket.emit("writeFileSuccess",{
@@ -32,11 +32,13 @@ export const handlerEditorSocketEvents = (socket) =>{
         }
     })
 
-    socket.on("readFile", ({pathToFileOrFolder  })=>{
+    socket.on("readFile", async({pathToFileOrFolder  })=>{
         try{
             const response = await fs.readFile(pathToFileOrFolder);
+            console.log("Response from readFile",response.toString());
             socket.emit("readFileSuccess",{
-                data:response.toString(),
+                value:response.toString(),
+                path:pathToFileOrFolder,
             })
         }catch(error){
             console.error("Error reading file",error);

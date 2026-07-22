@@ -1,10 +1,12 @@
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
 import { useState } from 'react';
 import { FileIcon } from '../../atoms/FileIcon/Fileicon';
+import useEditorSocketStore from '../../../store/editorSocketStore';
 
 export const TreeNode = ({ fileFolderData }) => {
-  console.log("braj", fileFolderData);
   const [visibility, setVisibility] = useState({});
+
+  const { editorSocket } = useEditorSocketStore();
 
   function toggleVisibility(name) {
     setVisibility((prev) => ({
@@ -15,6 +17,13 @@ export const TreeNode = ({ fileFolderData }) => {
 
   function computeExtension(name) {
     return name.split('.').pop();
+  }
+
+  function handleDoubleClick(fileFolderData) {
+    console.log("braj", fileFolderData);
+    editorSocket?.emit('readFile', {
+      pathToFileOrFolder:fileFolderData.path,
+    });
   }
 
   return (
@@ -53,6 +62,7 @@ export const TreeNode = ({ fileFolderData }) => {
               cursor: 'pointer',
               marginLeft: '5px',
             }}
+            onDoubleClick={() => handleDoubleClick(fileFolderData)}
           >
             {fileFolderData.name}
           </p>
