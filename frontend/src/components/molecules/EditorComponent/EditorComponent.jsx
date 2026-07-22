@@ -26,7 +26,7 @@ import Editor from '@monaco-editor/react'
      <>
      {editorState.theme && (
        <Editor
-       height={'80vh'}
+       height={'100vh'}
        width={'100%'}
        language={'javascript'}
        defaultValue={`// Welcome to the playground`}
