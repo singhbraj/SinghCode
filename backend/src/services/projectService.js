@@ -5,7 +5,7 @@ import { execPromisified } from '../util/execUtil.js';
 import directoryTree from 'directory-tree';
 import path from 'path';
 
-export const createReactProject = async (projectName) => {
+export const createProjectService = async () => {
     // Create a unique id an then the projects folder create a new folder with that id 
     const projectId = uuid4();
 
@@ -17,6 +17,8 @@ export const createReactProject = async (projectName) => {
     const response =  await execPromisified(REACT_PROJECT_COMMAND, {
          cwd: `./projects/${projectId}`
     })
+
+    return projectId;
 }
 
 
