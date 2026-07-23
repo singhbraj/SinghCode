@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Editor from '@monaco-editor/react'
 import useActiveFileTabStore from '../../../store/activeFileTabStore';
 import useEditorSocketStore from '../../../store/editorSocketStore';
+import { extensionToFileType } from '../../../util/extensionToFileType';
 
  export const EditorComponent = () => {
 
@@ -26,7 +27,7 @@ import useEditorSocketStore from '../../../store/editorSocketStore';
     }
 
     function handleEditorChange(value) {
-      
+
       if(timerId.current){
         clearTimeout(timerId.current);
       }
@@ -52,7 +53,7 @@ import useEditorSocketStore from '../../../store/editorSocketStore';
        <Editor
        height={'100vh'}
        width={'100%'}
-       language={undefined}
+       language={extensionToFileType(activeFileTab?.extension)}
        defaultValue={`// Welcome to the playground`}
        options={{
         fontSize: 14,

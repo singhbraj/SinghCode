@@ -10,7 +10,8 @@ const useEditorSocketStore = create((set) => ({
 
     incomingSocket?.on('readFileSuccess', (data) => {
       console.log('readFileSuccess', data);
-      setActiveFile(data.path, data.value);
+      const fileExtension = data.path.split('.').pop();
+      setActiveFile(data.path, data.value,fileExtension);
     });
 
     incomingSocket?.on('writeFileSuccess', (data) => {
