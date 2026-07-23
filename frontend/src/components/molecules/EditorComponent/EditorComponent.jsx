@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Editor from '@monaco-editor/react'
-import useEditorSocketStore from '../../../store/editorSocketStore';
 import useActiveFileTabStore from '../../../store/activeFileTabStore';
+import useEditorSocketStore from '../../../store/editorSocketStore';
 
  export const EditorComponent = () => {
 
@@ -9,8 +9,10 @@ import useActiveFileTabStore from '../../../store/activeFileTabStore';
       theme:null
     })
 
-    const { editorSocket } = useEditorSocketStore();
-    const {activeFileTab,setActiveFile} = useActiveFileTabStore();
+    const {activeFileTab} = useActiveFileTabStore();
+    const {editorSocket} = useEditorSocketStore();
+
+    const timerId = useRef(null);
 
     async function downloadTheme() {
         const response = await fetch('/Dracula.json')
@@ -23,10 +25,22 @@ import useActiveFileTabStore from '../../../store/activeFileTabStore';
         monaco.editor.setTheme('dracula')
     }
 
-    editorSocket?.on('readFileSuccess', (data) => {
-      console.log("braj", data);
-      setActiveFile(data.path, data.value,);
-    });
+    function handleEditorChange(value) {
+      
+      if(timerId.current){
+        clearTimeout(timerId.current);
+      }
+
+      timerId.current = setTimeout(() => {
+        clearTimeout(timerId.current);  
+      const editorContent = value;
+
+      editorSocket?.emit('writeFile', {
+        pathToFileOrFolder:activeFileTab?.path,
+          data:editorContent,
+        });
+      }, 1000);
+    }
 
     useEffect(() => {
         downloadTheme()
@@ -46,6 +60,7 @@ import useActiveFileTabStore from '../../../store/activeFileTabStore';
        }}
        value={activeFileTab?.value ? activeFileTab?.value : '// Welcome to the playground'}
        onMount={handleEditorMount}
+       onChange={handleEditorChange}
        />
        )}
      </>

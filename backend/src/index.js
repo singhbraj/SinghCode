@@ -60,7 +60,7 @@ editorNamespace.on('connection', (socket) => {
     }
 
 
-    handlerEditorSocketEvents(socket);
+    handlerEditorSocketEvents(socket,editorNamespace);
     socket.on('disconnect', () => {
         if (watcher) {
             watcher.close();

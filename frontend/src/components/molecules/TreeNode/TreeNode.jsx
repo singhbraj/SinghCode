@@ -2,11 +2,14 @@ import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
 import { useState } from 'react';
 import { FileIcon } from '../../atoms/FileIcon/Fileicon';
 import useEditorSocketStore from '../../../store/editorSocketStore';
+import { useFileContextMenuStore } from '../../../store/fileContextMenuStore';
 
 export const TreeNode = ({ fileFolderData }) => {
   const [visibility, setVisibility] = useState({});
 
   const { editorSocket } = useEditorSocketStore();
+
+  const { setIsOpen, setX:setFileContextX, setY:setFileContextY, setFile } = useFileContextMenuStore();
 
   function toggleVisibility(name) {
     setVisibility((prev) => ({
@@ -24,6 +27,14 @@ export const TreeNode = ({ fileFolderData }) => {
     editorSocket?.emit('readFile', {
       pathToFileOrFolder:fileFolderData.path,
     });
+  }
+
+  function handleContextMenuForFiles(e,path) {
+    setFile(path)
+    setFileContextX(e.clientX)
+    setFileContextY(e.clientY)
+    setIsOpen(true)
+
   }
 
   return (
@@ -63,6 +74,7 @@ export const TreeNode = ({ fileFolderData }) => {
               marginLeft: '5px',
             }}
             onDoubleClick={() => handleDoubleClick(fileFolderData)}
+            onContextMenu={(e) => handleContextMenuForFiles(fileFolderData)}
           >
             {fileFolderData.name}
           </p>
