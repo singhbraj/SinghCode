@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useTreeStructureStore } from '../../store/treeStructureStore';
+import  useTreeStructureStore  from '../../store/treeStructureStore';
 import { useParams } from 'react-router-dom';
 import { TreeNode } from '../molecules/TreeNode/TreeNode';
 import { useFileContextMenuStore } from '../../store/fileContextMenuStore';
@@ -15,17 +15,16 @@ export const TreeStructure = () => {
 
 
     useEffect(() => {
-     if(treeStructure){
-       console.log(treeStructure);
-     } else {
+      if (projectId) {
         setTreeStructure(projectId);
-     }
-    }, [projectId,setTreeStructure, treeStructure]);
+      }
+    }, [projectId, setTreeStructure]);
 
     return (
         <>
-           {isFileContextOpen && fileContextX && fileContextY &&
-            <FileContextMenu x={fileContextX} y={fileContextY}  path={file} />}
+           {isFileContextOpen && fileContextX != null && fileContextY != null && (
+            <FileContextMenu x={fileContextX} y={fileContextY} path={file} />
+           )}
             <TreeNode fileFolderData={treeStructure} />
         </>
     )

@@ -16,5 +16,7 @@
 .fileContextOptionsWrapper {
     width: 120px;
     position: fixed;
+    z-index: 1000;
     border: 1.5px solid black;
+    background-color: #363545;
 }

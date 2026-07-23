@@ -29,12 +29,13 @@ export const TreeNode = ({ fileFolderData }) => {
     });
   }
 
-  function handleContextMenuForFiles(e,path) {
-    setFile(path)
-    setFileContextX(e.clientX)
-    setFileContextY(e.clientY)
-    setIsOpen(true)
-
+  function handleContextMenuForFiles(e, path) {
+    e.preventDefault();
+    e.stopPropagation();
+    setFile(path);
+    setFileContextX(e.clientX);
+    setFileContextY(e.clientY);
+    setIsOpen(true);
   }
 
   return (
@@ -74,7 +75,7 @@ export const TreeNode = ({ fileFolderData }) => {
               marginLeft: '5px',
             }}
             onDoubleClick={() => handleDoubleClick(fileFolderData)}
-            onContextMenu={(e) => handleContextMenuForFiles(fileFolderData)}
+            onContextMenu={(e) => handleContextMenuForFiles(e, fileFolderData.path)}
           >
             {fileFolderData.name}
           </p>

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { EditorComponent } from '../components/molecules/EditorComponent/EditorComponent'
 import { EditorButton } from '../components/atoms/EditorButton.jsx/EdittorButton'
 import { TreeStructure } from '../components/organisms/TreeStructure'
-import { useTreeStructureStore } from '../store/treeStructureStore'
+import  useTreeStructureStore from '../store/treeStructureStore'
 import useEditorSocketStore from '../store/editorSocketStore'
 
 export const ProjectPlayground = () => {

@@ -1,11 +1,16 @@
 import { create } from 'zustand';
 import { getProjectTree } from '../apis/projects';
 
-export const useTreeStructureStore = create((set) => ({
+const useTreeStructureStore = create((set, get) => ({
   treeStructure: null,
+  projectId: null,
   setTreeStructure: async (projectId) => {
-    const projectTree = await getProjectTree(projectId);
-    // console.log({projectTree});
-    set({ treeStructure: projectTree });
+    const id = projectId || get().projectId;
+    if (!id) return;
+
+    const projectTree = await getProjectTree(id);
+    set({ treeStructure: projectTree, projectId: id });
   },
 }));
+
+export default useTreeStructureStore;
